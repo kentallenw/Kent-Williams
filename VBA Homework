@@ -1,0 +1,52 @@
+Sub stock_ticker()
+
+' Identify Stock ticker as text string
+      Dim ticker As String
+
+' Starting value of counter for stock ticker value
+      Dim ticker_total As Double
+        ticker_total = 0
+
+' Stock ticker location
+      Dim Summary_Table_Row As Integer
+        Summary_Table_Row = 2
+
+' Loop through all rows on worksheet, starting in row 2 down to last row of sheet
+      For i = 2 To 800000
+
+    ' Check to see when the values in the row change from one ticker to next ... works when rows of data are sorted
+            If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+      ' Ticker
+          ticker = Cells(i, 1).Value
+
+      ' Sum volume from column 7 to total for individual ticker
+          ticker_total = ticker_total + Cells(i, 7).Value
+
+      ' Populate ticker in the summarized table starting at column J
+          Range("J" & Summary_Table_Row).Value = ticker
+
+      ' Populate the volume amount that has been summarized at column K of table
+          Range("K" & Summary_Table_Row).Value = ticker_total
+
+      ' Move to next row
+          Summary_Table_Row = Summary_Table_Row + 1
+      
+      ' Start back at 0 for the volume counter
+          ticker_total = 0
+
+    ' When next row ticker equals prior row
+    
+            Else
+
+        ' Add volume from column 7 to the total for this ticker
+            ticker_total = ticker_total + Cells(i, 7).Value
+
+        End If
+
+    Next i
+Range("J1").Value = "Ticker"
+Range("K1").Value = "Total Stock Volume"
+
+
+End Sub
